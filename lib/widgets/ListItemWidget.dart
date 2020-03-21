@@ -13,7 +13,7 @@ class ListItemWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget> [ 
         Container(
-          margin: EdgeInsets.only(left: 10, right: 15),
+          margin: EdgeInsets.only(left: 10, right: 10),
           child: Image(
           image: NetworkImage(item.imageUrl),
             width: 80,
@@ -21,25 +21,28 @@ class ListItemWidget extends StatelessWidget {
           )
         ),
         Flexible(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget> [
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Text(
-                  item.price,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.lightBlueAccent)
+          child: Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget> [
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  child: Text(
+                    item.price,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.lightBlueAccent)
+                  )
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  child: Text(
+                    item.title,
+                    style: TextStyle(fontSize: 15, color: Colors.grey[700])
+                  )
                 )
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Text(
-                  item.title,
-                  style: TextStyle(fontSize: 15, color: Colors.grey[700])
-                )
-              )
-            ]
+              ]
+            )
           )
         ),
       ]
