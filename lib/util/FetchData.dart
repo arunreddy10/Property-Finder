@@ -13,10 +13,12 @@ Future<List<ListItemModel> > fetchPropertyData(String place) async {
       for (dynamic listing in responseJson['listings']) {
         results.add(ListItemModel(listing['title'], listing['img_url'], listing['price_formatted']));
       }
-      while(results.length <= 500) {
-        int count = results.length;
-        for (int i = 0; i < count; i++) {
-          results.add(ListItemModel(results[i].title, results[i].imageUrl, results[i].price));
+      if (results.isNotEmpty) {
+        while(results.length <= 500) {
+          int count = results.length;
+          for (int i = 0; i < count; i++) {
+            results.add(ListItemModel(results[i].title, results[i].imageUrl, results[i].price));
+          }
         }
       }
     }
