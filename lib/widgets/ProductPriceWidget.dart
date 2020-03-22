@@ -18,9 +18,12 @@ class ProductPriceWidget extends StatelessWidget {
               textAlign: TextAlign.left,
               style: GoogleFonts.libreBaskerville(textStyle: TextStyle(color: Colors.blue, fontSize: 25.0, fontWeight: FontWeight.bold)) 
             ),
-            Text('(50% OFF)',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 18.0,fontWeight: FontWeight.bold)
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Text('(50% OFF)',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey, fontSize: 18.0,fontWeight: FontWeight.bold)
+              )
             ),
           ],
         ),

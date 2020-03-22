@@ -52,7 +52,7 @@ class ProductPage extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-                        child: Text("Last Updated on:  " + listItem.lastUpdated,
+                        child: Text("Last Updated:  " + listItem.lastUpdated,
                           textAlign: TextAlign.left,
                           style: TextStyle(color: Colors.grey, fontSize: 13.0),
                         ),

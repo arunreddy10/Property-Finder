@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/ProductPage.dart';
 import '../models/ListItemModel.dart';
 
 class ListItemWidget extends StatelessWidget {
@@ -10,7 +11,12 @@ class ListItemWidget extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return GestureDetector (
       onTap: () {
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text('You pressed an item')));
+        Navigator.push(
+          context,
+          MaterialPageRoute( 
+            builder: (context) => ProductPage(listItem: item),
+          ),
+        );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

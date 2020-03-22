@@ -12,7 +12,7 @@ class ProductDetailsWidget extends StatelessWidget {
     List<Widget> detailsWidgets = new List();
     detailsWidgets.add(Container(color: Colors.blue[75],
         alignment: Alignment.centerLeft,
-        margin: EdgeInsets.only( left: 10, right: 10, top: 5, bottom: 5),
+        margin: EdgeInsets.only( left: 10, right: 10, bottom: 5),
         child: Text('Property Details:',
           textAlign: TextAlign.left,
           style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.black, fontSize: 26.0,fontWeight: FontWeight.bold, decoration: TextDecoration.underline)) 
@@ -31,16 +31,19 @@ class ProductDetailsWidget extends StatelessWidget {
       margin: EdgeInsets.only( left: 10, right: 10),
       alignment: Alignment.centerLeft,
       child: Text(type + ':  '+ value,
-        textAlign: TextAlign.justify,
-        style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.black,fontSize: 20.0)) 
+        textAlign: TextAlign.left,
+        style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.black,fontSize: 18.0)) 
       ),
     );
   }
 
   @override
   Widget build(BuildContext context){
-    return Column(
-      children: getDetailsWidgets(listItem)
+    return Container(
+      margin: EdgeInsets.only(top: 5, bottom: 10),
+      child: Column(
+        children: getDetailsWidgets(listItem)
+      )
     );
   }
 }
