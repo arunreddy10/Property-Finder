@@ -1,12 +1,25 @@
 import 'dart:core';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/ListItemModel.dart';
 
-Future<List<ListItemModel> > fetchPropertyData(String place) async {
+String fetchQuery(String place) {
+  Map<String, String> requestData = {
+    'country': 'uk',
+    'pretty': '1',
+    'encoding': 'json',
+    'listing_type': 'buy',
+    'action': 'search_listings',
+    'page': '1',
+    'place_name': place
+  };
+  return requestData.keys.map((key) => key + '=' + Uri.encodeComponent(requestData[key])).join('&'); 
+}
+
+List<ListItemModel> getPropertiesFromResponse(String body) {
   List<ListItemModel> results = List();
-  http.Response response = await http.get('http://localhost:3000/?place='+place);
-  Map<String, dynamic> responseBody = json.decode(response.body);
+  Map<String, dynamic> responseBody = json.decode(body);
   if (responseBody.containsKey('response')) {
     Map<String, dynamic> responseJson = responseBody['response'];
     if (responseJson.containsKey('listings')) {
@@ -27,4 +40,24 @@ Future<List<ListItemModel> > fetchPropertyData(String place) async {
     }
   }
   return results;
+}
+
+Future<List<ListItemModel> > fetchPropertyData(String place) async {
+  if (kIsWeb) {
+    return fetchPropertyDataFromLocal(place);
+  } else {
+    return fetchPropertyDataFromNestoria(place);
+  }
+}
+
+Future<List<ListItemModel> > fetchPropertyDataFromNestoria(String place) async {
+  String query = fetchQuery(place);
+  http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query);
+  return getPropertiesFromResponse(response.body);
+
+}
+
+Future<List<ListItemModel> > fetchPropertyDataFromLocal(String place) async {
+  http.Response response = await http.get('http://localhost:3000/?place='+place);
+  return getPropertiesFromResponse(response.body);
 }
