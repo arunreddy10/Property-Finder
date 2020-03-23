@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:PropertyFinder/widgets/SnackBarWidget.dart';
 
 class ProductPriceWidget extends StatelessWidget {
   final String itemPrice;
@@ -32,7 +33,9 @@ class ProductPriceWidget extends StatelessWidget {
         margin: EdgeInsets.only( right: 10,top: 5, bottom: 10),
         alignment: Alignment.center,
         child: RaisedButton(
-          onPressed: null,
+          onPressed: () {
+            Scaffold.of(context).showSnackBar(getSnackBar('Added to cart !!'));
+          },
           color: Colors.blue,
           disabledColor: Colors.blue,
           child: Text('BUY NOW',
