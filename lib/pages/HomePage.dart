@@ -39,12 +39,16 @@ class HomePageState extends State<HomePage> {
 								margin: EdgeInsets.only(top:20), 
 								child: Text(
 									'Search for houses to buy!',
-									style: TextStyle(fontSize: 16, color: Colors.grey[700]))),
+									style: TextStyle(fontSize: 16, color: Colors.grey[700])
+                )
+              ),
 							Container(
 								margin: EdgeInsets.only(top:20), 
 								child: Text(
 									'Search by place-name or postcode.',
-									style: TextStyle(fontSize: 16, color: Colors.grey[700]))),
+									style: TextStyle(fontSize: 16, color: Colors.grey[700])
+                )
+              ),
 							Container(
                 margin: EdgeInsets.only(top: 30),
                 width: 300,
@@ -59,7 +63,8 @@ class HomePageState extends State<HomePage> {
               ),
 							Container(
 								margin: EdgeInsets.only(top:20), 
-								child: Image(image: AssetImage('images/house.png'))),
+								child: Image(image: AssetImage('images/house.png'))
+              ),
 						],
 					),
 				),

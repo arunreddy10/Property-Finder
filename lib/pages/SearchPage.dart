@@ -1,8 +1,8 @@
+import 'package:PropertyFinder/widgets/SearchResultsWidget.dart';
 import 'package:flutter/material.dart';
 import '../models/ListItemModel.dart';
 import '../pages/ProductPage.dart';
 import '../util/FetchData.dart';
-import '../widgets/ListItemWidget.dart';
 
 class SearchPage extends StatefulWidget {
   final String title;
@@ -44,7 +44,7 @@ class SearchPageState extends State<SearchPage> {
   void onTap(ListItemModel listItem, int index) {
     Navigator.push(
       context,
-      MaterialPageRoute( 
+      MaterialPageRoute(
         builder: (context) => ProductPage(listItem: listItem, similarListItems: getSimilarItemsForIndex(index))
       ),
     );
@@ -86,18 +86,29 @@ class SearchPageState extends State<SearchPage> {
                 )
               ]
             ), 
-            widget.isLoading ? 
-              Container(
-                margin: EdgeInsets.only(top: 200),
-                child: CircularProgressIndicator()
-              ) : Flexible(
-                child: ListView.separated(
-                  itemCount: widget.listings.length,
-                  itemBuilder: ((context, index) => ListItemWidget(listItem: widget.listings[index], index: index, onTap: onTap,)),
-                  separatorBuilder: ((context, index) => Divider(color: Colors.grey, thickness: 1)),
-                  shrinkWrap: true,
-                )
-              )
+            widget.isLoading ? Container(
+              margin: EdgeInsets.only(top: 200),
+              child: CircularProgressIndicator()
+            ) : widget.listings.isEmpty ? Column(
+              children: <Widget> [
+                Container(
+                  margin: EdgeInsets.only(top: 150),
+                  child: Text(
+                    'Please enter a valid location',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20
+                    )
+                  )
+                ),
+                Container(
+								  margin: EdgeInsets.only(top:20), 
+								  child: Image(image: AssetImage('images/house.png'))
+                ),
+              ]
+            ) : Flexible(
+              child: SearchResultsWidget(listings: widget.listings, onTap: onTap)
+            )
           ]
 				),
 			),
