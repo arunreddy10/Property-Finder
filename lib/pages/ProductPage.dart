@@ -72,7 +72,7 @@ class ProductPage extends StatelessWidget {
             ),  
             Container(
               width: MediaQuery.of(context).size.width,
-              child: Divider(indent: 3, endIndent: 3, color: Colors.grey[350] ,height: 1)
+              child: Divider(indent: 3, endIndent: 3, color: Colors.grey[350] ,height: 1, thickness: 1)
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -83,7 +83,7 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             ProductCarouselWidget(
-              imgList: similarListItems.map((similarListItem) => similarListItem.imageUrl).toList()
+              listItems: similarListItems
             ) 
           ],
         ),
