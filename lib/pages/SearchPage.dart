@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/ListItemModel.dart';
+import '../pages/ProductPage.dart';
 import '../util/FetchData.dart';
 import '../widgets/ListItemWidget.dart';
 
@@ -28,6 +29,25 @@ class SearchPageState extends State<SearchPage> {
       widget.listings = response,
       widget.isLoading = false
     });
+  }
+
+  List<ListItemModel> getSimilarItemsForIndex(int index) {
+    List<ListItemModel> similarItems = List();
+    int current = index;
+    while(similarItems.length < 7) {
+      current = (current+1)%widget.listings.length;
+      similarItems.add(widget.listings[current]);
+    }
+    return similarItems;
+  }
+  
+  void onTap(ListItemModel listItem, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute( 
+        builder: (context) => ProductPage(listItem: listItem, similarListItems: getSimilarItemsForIndex(index))
+      ),
+    );
   }
 
   @override
@@ -73,7 +93,7 @@ class SearchPageState extends State<SearchPage> {
               ) : Flexible(
                 child: ListView.separated(
                   itemCount: widget.listings.length,
-                  itemBuilder: ((context, index) => ListItemWidget(item: widget.listings[index])),
+                  itemBuilder: ((context, index) => ListItemWidget(listItem: widget.listings[index], index: index, onTap: onTap,)),
                   separatorBuilder: ((context, index) => Divider(color: Colors.grey, thickness: 1)),
                   shrinkWrap: true,
                 )

@@ -9,8 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProductPage extends StatelessWidget {
   final ListItemModel listItem;
+  final List<ListItemModel> similarListItems; 
 
-  ProductPage({Key key, this.listItem}) : super(key : key);
+  ProductPage({Key key, this.listItem, this.similarListItems}) : super(key : key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +82,9 @@ class ProductPage extends StatelessWidget {
                 style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.grey[650], fontSize: 18.0)),
               ),
             ),
+            ProductCarouselWidget(
+              imgList: similarListItems.map((similarListItem) => similarListItem.imageUrl).toList()
+            ) 
           ],
         ),
       )
