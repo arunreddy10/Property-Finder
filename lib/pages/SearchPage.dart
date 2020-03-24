@@ -2,10 +2,11 @@ import 'package:PropertyFinder/widgets/SearchResultsWidget.dart';
 import 'package:flutter/material.dart';
 import '../models/ListItemModel.dart';
 import '../pages/ProductPage.dart';
-import '../util/FetchData.dart';
+import '../util/NetworkManager.dart';
 
 class SearchPage extends StatefulWidget {
   final String title;
+  final NetworkManager networkManager = NetworkManager();
   String place;
   List<ListItemModel> listings = List();
   bool isLoading = true;
@@ -24,7 +25,7 @@ class SearchPageState extends State<SearchPage> {
     setState(() => {
       widget.isLoading = true
     });
-    List<ListItemModel> response = await fetchPropertyData(place);
+    List<ListItemModel> response = await widget.networkManager.fetchPropertyData(place);
     setState(() => {
       widget.listings = response,
       widget.isLoading = false
