@@ -24,12 +24,15 @@ Future main() async {
   await for (HttpRequest request in server) {
     if (request.uri.queryParameters.containsKey('place')) {
       String query = fetchQuery(request.uri.queryParameters['place']);
-      http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query);
+      http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query)
+        .catchError((err) {
+          print(err);
+        });
       request.response.headers.contentType = new ContentType("application", "json", charset: "utf-8");
       request.response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS, GET");
       request.response.headers.add("Access-Control-Allow-Origin", "*");
       request.response.headers.add('Access-Control-Allow-Headers', '*'); 
-      request.response.write(response.body);
+      response != null && response.body != null ? request.response.write(response.body) : request.response.write('');
       await request.response.close();
     }
   }

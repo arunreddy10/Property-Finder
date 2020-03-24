@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/ListItemModel.dart';
+
+const int TIMEOUT = 5;
 
 String fetchQuery(String place) {
   Map<String, String> requestData = {
@@ -19,6 +22,9 @@ String fetchQuery(String place) {
 
 List<ListItemModel> getPropertiesFromResponse(String body) {
   List<ListItemModel> results = List();
+  if(body.isEmpty || body.startsWith('<')) {
+    return results;
+  }
   Map<String, dynamic> responseBody = json.decode(body);
   if (responseBody.containsKey('response')) {
     Map<String, dynamic> responseJson = responseBody['response'];
@@ -42,6 +48,10 @@ List<ListItemModel> getPropertiesFromResponse(String body) {
   return results;
 }
 
+List<ListItemModel> handleResponse(http.Response response) {
+  return response != null && response.statusCode == 200 ? getPropertiesFromResponse(response.body) : List();
+}
+
 Future<List<ListItemModel> > fetchPropertyData(String place) async {
   if (kIsWeb) {
     return fetchPropertyDataFromLocal(place);
@@ -52,12 +62,19 @@ Future<List<ListItemModel> > fetchPropertyData(String place) async {
 
 Future<List<ListItemModel> > fetchPropertyDataFromNestoria(String place) async {
   String query = fetchQuery(place);
-  http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query);
-  return getPropertiesFromResponse(response.body);
-
+  http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query)
+    .timeout(Duration(seconds: TIMEOUT))
+    .catchError((err) {
+      print(err);
+    });
+  return handleResponse(response);
 }
 
 Future<List<ListItemModel> > fetchPropertyDataFromLocal(String place) async {
-  http.Response response = await http.get('http://localhost:3000/?place='+place);
-  return getPropertiesFromResponse(response.body);
+  http.Response response = await http.get('http://localhost:3000/?place='+place)
+    .timeout(Duration(seconds: TIMEOUT))
+    .catchError((err) {
+      print(err);
+    });
+  return handleResponse(response);
 }
