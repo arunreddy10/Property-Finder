@@ -17,7 +17,7 @@ class ProductPriceWidget extends StatelessWidget {
           children: <Widget>[
             Text('Price: \n' + itemPrice,
               textAlign: TextAlign.left,
-              style: GoogleFonts.libreBaskerville(textStyle: TextStyle(color: Colors.blue, fontSize: 25.0, fontWeight: FontWeight.bold)) 
+              style: GoogleFonts.libreBaskerville(textStyle: TextStyle(color: Colors.blue, fontSize: 24.0, fontWeight: FontWeight.bold)) 
             ),
             Container(
               margin: EdgeInsets.only(top: 5),

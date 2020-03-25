@@ -15,7 +15,7 @@ class ProductDetailsWidget extends StatelessWidget {
         margin: EdgeInsets.only( left: 10, right: 10, bottom: 5),
         child: Text('Property Details:',
           textAlign: TextAlign.left,
-          style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.black, fontSize: 26.0,fontWeight: FontWeight.bold, decoration: TextDecoration.underline)) 
+          style: GoogleFonts.crimsonText(textStyle: TextStyle(color: Colors.black, fontSize: 24.0,fontWeight: FontWeight.bold, decoration: TextDecoration.underline)) 
         )
       )
     );
