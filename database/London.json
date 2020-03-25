@@ -552,7 +552,7 @@
           "listing_type": "buy",
           "location_accuracy": 9,
           "longitude": -0.104186,
-          "price_currency": "£",
+          "price_formatted": "£300,000",
           "property_type": "house",
           "room_number": 3,
           "size": 0,

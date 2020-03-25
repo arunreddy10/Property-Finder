@@ -6,6 +6,7 @@ import '../util/CacheManager.dart';
 
 class SearchPage extends StatefulWidget {
   final String title;
+  final CacheManager cacheManager = CacheManager();
   String place;
   List<ListItemModel> listings = List();
   bool isLoading = true;
@@ -24,7 +25,7 @@ class SearchPageState extends State<SearchPage> {
     setState(() => {
       widget.isLoading = true
     });
-    List<ListItemModel> response = await CacheManager().getPropertyData(place);
+    List<ListItemModel> response = await widget.cacheManager.getPropertyData(place);
     setState(() => {
       widget.listings = response,
       widget.isLoading = false

@@ -1,17 +1,11 @@
-import 'dart:typed_data';
-import 'dart:io';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:PropertyFinder/models/ListItemModel.dart';
 import 'package:PropertyFinder/util/NetworkManager.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
-class CacheManager extends BaseCacheManager {
-  static const key = 'database';
-  static final int maxNumberOfFiles = 50;
-  static final Duration cacheTimeout = Duration(days: 1);
+class CacheManager {
+  static Map<String,String> _cache = Map();
   static CacheManager _instance;
 
   factory CacheManager() {
@@ -21,41 +15,37 @@ class CacheManager extends BaseCacheManager {
     return _instance;
   }
 
-  CacheManager._() : super(key, maxNrOfCacheObjects: maxNumberOfFiles, maxAgeCacheObject: cacheTimeout) {
+  CacheManager._() {
     _loadDatabase();
   }
 
-  Future<List<ListItemModel> > getPropertyData(String place) async {
-    String url = NetworkManager.getUrl(place);
-    File file = await getSingleFile(url);
-    if (file != null) {
-      String response = await file.readAsString();
-      return NetworkManager.getPropertiesFromResponse(response);
+  List<ListItemModel> _getCachedData(String url) {
+    if (_cache.containsKey(url)) {
+      Map<String, dynamic> response = json.decode(_cache[url]);
+      return NetworkManager.getPropertiesFromResponse(json.encode(response['body']));
     }
     return List();
   }
 
-  Future<String> _loadFileAsString(String location) async {
-    return await  rootBundle.loadString(key);
+  Future<List<ListItemModel> > getPropertyData(String place) async {
+    String url = NetworkManager.getUrl(place.toLowerCase());
+    http.Response response = await NetworkManager.fetchPropertyData(url);
+    List<ListItemModel> results = response != null && response.statusCode == 200 ? 
+      NetworkManager.getPropertiesFromResponse(response.body) : _getCachedData(url);
+    print(results.length);
+    return results;
   }
 
-  Future<Uint8List> _loadFileAsBytes(String location) async {
-    ByteData bytes = await rootBundle.load(key);
-    return bytes.buffer.asUint8List();
+  Future<String> _loadFileAsString(String location) async {
+    return await rootBundle.loadString(location);
   }
 
   void _loadDatabase() async {
-    Map<String, String> database = json.decode(await _loadFileAsString('database/Database.json'));
+    Map<String, dynamic> database = json.decode(await _loadFileAsString('database/Database.json'));
     for (String place in database.keys) {
       String url = NetworkManager.getUrl(place);
-      Uint8List response = await _loadFileAsBytes('database/'+database[place]+'.json');
-      putFile(url, response);
+      String response = await _loadFileAsString('database/'+database[place]);
+      _cache[url] = response;
     }
-  }
-
-  @override
-  Future<String> getFilePath() async {
-    var directory = await getTemporaryDirectory();
-    return path.join(directory.path, key);
   }
 }

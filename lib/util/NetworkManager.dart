@@ -1,8 +1,10 @@
 import 'dart:core';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import '../models/ListItemModel.dart';
 
+const TIMEOUT = 5;
 class NetworkManager {
   static String getUrl(String place) {
     if(kIsWeb) {
@@ -12,9 +14,18 @@ class NetworkManager {
     }
   }
 
+  static Future<http.Response> fetchPropertyData(String url) async {
+    return await http.get(url)
+      .timeout(Duration(seconds: TIMEOUT))
+      .catchError((err) {
+        print(err);
+      }
+    );
+  }
+
   static List<ListItemModel> getPropertiesFromResponse(String body) {
     List<ListItemModel> results = List();
-    if(body.isEmpty || body.startsWith('<')) {
+    if(body == null || body.isEmpty || body.startsWith('<')) {
       return results;
     }
     Map<String, dynamic> responseBody = json.decode(body);

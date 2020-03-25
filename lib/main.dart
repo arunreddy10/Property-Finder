@@ -1,8 +1,12 @@
+import 'package:PropertyFinder/util/CacheManager.dart';
 import 'package:flutter/material.dart';
 import './pages/HomePage.dart';
 import './pages/SearchPage.dart';
 
-void main() => runApp(App());
+void main() {
+  runApp(App());
+  CacheManager();
+}
 
 class App extends StatelessWidget {
 	@override
