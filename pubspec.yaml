@@ -50,6 +50,21 @@ flutter:
     - images/house.png
     - database/Database.json
     - database/London.json
+    - database/Aberdeen.json
+    - database/Belfast.json
+    - database/Birmingham.json
+    - database/Brighton.json
+    - database/Bristol.json
+    - database/Cardiff.json
+    - database/Edinburgh.json
+    - database/Glasgow.json
+    - database/Inverness.json
+    - database/Leeds.json
+    - database/Liverpool.json
+    - database/Manchester.json
+    - database/Newcastle.json
+    - database/Sheffield.json
+    - database/Swansea.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

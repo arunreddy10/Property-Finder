@@ -1,35 +1,18 @@
-import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import '../models/ListItemModel.dart';
 
-const int TIMEOUT = 5;
-
 class NetworkManager {
-  Future<List<ListItemModel> > fetchPropertyData(String place) async {
-    if (kIsWeb) {
-      return _fetchPropertyDataFromLocal(place);
+  static String getUrl(String place) {
+    if(kIsWeb) {
+      return _getLocalUrl(place);
     } else {
-      return _fetchPropertyDataFromNestoria(place);
+      return _getNestoriaUrl(place);
     }
   }
 
-  String _fetchQuery(String place) {
-    Map<String, String> requestData = {
-      'country': 'uk',
-      'pretty': '1',
-      'encoding': 'json',
-      'listing_type': 'buy',
-      'action': 'search_listings',
-      'page': '1',
-      'place_name': place
-    };
-    return requestData.keys.map((key) => key + '=' + Uri.encodeComponent(requestData[key])).join('&'); 
-  }
-
-  List<ListItemModel> _getPropertiesFromResponse(String body) {
+  static List<ListItemModel> getPropertiesFromResponse(String body) {
     List<ListItemModel> results = List();
     if(body.isEmpty || body.startsWith('<')) {
       return results;
@@ -57,26 +40,25 @@ class NetworkManager {
     return results;
   }
 
-  List<ListItemModel> _handleResponse(http.Response response) {
-    return response != null && response.statusCode == 200 ? _getPropertiesFromResponse(response.body) : List();
+  static String _getNestoriaQuery(String place) {
+    Map<String, String> requestData = {
+      'country': 'uk',
+      'pretty': '1',
+      'encoding': 'json',
+      'listing_type': 'buy',
+      'action': 'search_listings',
+      'page': '1',
+      'place_name': place
+    };
+    return requestData.keys.map((key) => key + '=' + Uri.encodeComponent(requestData[key])).join('&'); 
   }
 
-  Future<List<ListItemModel> > _fetchPropertyDataFromNestoria(String place) async {
-    String query = _fetchQuery(place);
-    http.Response response = await http.get('https://api.nestoria.co.uk/api?'+query)
-      .timeout(Duration(seconds: TIMEOUT))
-      .catchError((err) {
-        print(err);
-      });
-    return _handleResponse(response);
+  static String _getLocalUrl(String place){
+    return 'http://localhost:3000/?place='+place;
   }
 
-  Future<List<ListItemModel> > _fetchPropertyDataFromLocal(String place) async {
-    http.Response response = await http.get('http://localhost:3000/?place='+place)
-      .timeout(Duration(seconds: TIMEOUT))
-      .catchError((err) {
-        print(err);
-      });
-    return _handleResponse(response);
+  static String _getNestoriaUrl(String place){
+    String query = _getNestoriaQuery(place);
+    return 'https://api.nestoria.co.uk/api?'+query;
   }
 }

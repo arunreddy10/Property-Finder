@@ -1,6 +1,18 @@
-[
-    {
-        "city": "london",
-        "file": "London.json"
-    }
-]
+{
+    "london": "London.json",
+    "liverpool": "Liverpool.json",
+    "manchester": "Manchester.json" ,
+    "newcastle": "Newcastle.json",
+    "sheffield": "Sheffield.json",
+    "swansea": "Swansea.json",
+    "aberdeen": "Aberdeen.json",
+    "belfast": "Belfast.json",
+    "birmingham": "Birmingham.json",
+    "brighton": "Brighton.json",
+    "bristol": "Bristol.json",
+    "cardiff": "Cardiff.json",
+    "edinburgh":"Edinburgh.json",
+    "glasgow": "Glasgow.json",
+    "inverness": "Inverness.json",
+    "leeds": "Leeds.json"
+}
