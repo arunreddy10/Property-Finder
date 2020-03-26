@@ -21,19 +21,26 @@ class CacheManager {
 
   List<ListItemModel> _getCachedData(String url) {
     if (_cache.containsKey(url)) {
-      Map<String, dynamic> response = json.decode(_cache[url]);
-      return NetworkManager.getPropertiesFromResponse(json.encode(response['body']));
+      return NetworkManager.getPropertiesFromResponse(_cache[url]);
     }
     return List();
+  }
+
+  void _updateCache(String url, String response) {
+    _cache[url] = response;
   }
 
   Future<List<ListItemModel> > getPropertyData(String place) async {
     String url = NetworkManager.getUrl(place.toLowerCase());
     http.Response response = await NetworkManager.fetchPropertyData(url);
-    List<ListItemModel> results = response != null && response.statusCode == 200 ? 
-      NetworkManager.getPropertiesFromResponse(response.body) : _getCachedData(url);
-    print(results.length);
-    return results;
+    if (response != null && response.statusCode == 200) {
+      List<ListItemModel> properties = NetworkManager.getPropertiesFromResponse(response.body);
+      if (properties.isNotEmpty) {
+        _updateCache(url, response.body);
+        return properties;
+      }
+    }
+    return _getCachedData(url);
   }
 
   Future<String> _loadFileAsString(String location) async {
@@ -44,8 +51,9 @@ class CacheManager {
     Map<String, dynamic> database = json.decode(await _loadFileAsString('database/Database.json'));
     for (String place in database.keys) {
       String url = NetworkManager.getUrl(place);
-      String response = await _loadFileAsString('database/'+database[place]);
-      _cache[url] = response;
+      String content = await _loadFileAsString('database/'+database[place]);
+      Map<String, dynamic> jsonContent = json.decode(content);
+      _cache[url] = json.encode(jsonContent['body']);
     }
   }
 }
