@@ -19,7 +19,15 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
-  final TextEditingController controller = TextEditingController(text: 'london');
+  TextEditingController controller;
+  
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: widget.place);
+    fetchProperties(widget.place);
+  }
+  
 
   void fetchProperties(String place) async {
     setState(() => {
@@ -49,12 +57,6 @@ class SearchPageState extends State<SearchPage> {
         builder: (context) => ProductPage(listItem: listItem, similarListItems: getSimilarItemsForIndex(index))
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchProperties(widget.place);
   }
 
 	@override
